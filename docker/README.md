@@ -1,12 +1,12 @@
-PHPDocker.io generated environment
+docker.io generated environment
 ==================================
 
 # Add to your project #
 
 Simply, unzip the file into your project, this will create `docker-compose.yml` on the root of your project and a folder
-named `phpdocker` containing nginx and php-fpm config for it.
+named `docker` containing nginx and php-fpm config for it.
 
-Ensure the webserver config on `phpdocker/nginx/nginx.conf` is correct for your project. PHPDocker.io will have
+Ensure the webserver config on `docker/nginx/nginx.conf` is correct for your project. docker.io will have
 customised this file according to the front controller location relative to the docker-compose file you chose on the
 generator (by default `public/index.php`).
 
