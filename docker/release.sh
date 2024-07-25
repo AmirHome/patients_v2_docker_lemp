@@ -16,6 +16,7 @@ $dc --env-file ./admin/.env up -d --build
 
 # wait for mysql to initialize
 sleep 5
+docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' docker-lemp-mysql
 
 docker exec -i docker-lemp-php-fpm bash -c "chmod -R 775 storage"
 docker exec -i docker-lemp-php-fpm bash -c "chown -R www-data:www-data storage"

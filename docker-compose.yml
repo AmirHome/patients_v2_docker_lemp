@@ -2,43 +2,55 @@
 #                          Generated on docker.io                          #
 ###############################################################################
 services:
-    redis:
-        image: 'redis:alpine'
-        container_name: "docker-lemp-redis"
+  redis:
+    image: "redis:alpine"
+    container_name: "docker-lemp-redis"
+    networks:
+      - docker-lemp-network
 
-    mysql:
-        image: 'mysql:8.0'
-        container_name: "docker-lemp-mysql"
-        working_dir: /app1
-        volumes:
-            - './admin:/app1'
-        environment:
-            - MYSQL_DATABASE=${DB_DATABASE}
-            - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
-            - MYSQL_PASSWORD=${DB_PASSWORD}
-        ports:
-            - '${DB_PORT}:3306'
+  mysql:
+    image: "mysql:8.0"
+    container_name: "docker-lemp-mysql"
+    working_dir: /app1
+    volumes:
+      - "./admin:/app1"
+    environment:
+      - MYSQL_DATABASE=${DB_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "${DB_PORT}:3306"
+    networks:
+      - docker-lemp-network
 
-    webserver:
-        image: 'nginx:alpine'
-        container_name: "docker-lemp-nginx"
-        working_dir: /app1
-        volumes:
-            - './admin:/app1'
-            - './docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf'
-        ports:
-            - '${WEB_PORT}:80'
+  webserver:
+    image: "nginx:alpine"
+    container_name: "docker-lemp-nginx"
+    working_dir: /app1
+    volumes:
+      - "./admin:/app1"
+      - "./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf"
+    ports:
+      - "${WEB_PORT}:80"
+    networks:
+      - docker-lemp-network
 
-    php-fpm:
-        build: docker/php-fpm
-        container_name: "docker-lemp-php-fpm"
-        environment:
-            - PHP_FPM_USER=www-data
-            - PHP_FPM_GROUP=www-data
-            - PHP_FPM_LISTEN=9000
-        working_dir: /app1
-        volumes:
-            - './admin:/app1'
-            - './docker/php-fpm/php-ini-overrides.ini:/usr/local/etc/php/99-overrides.ini'
-        # command: bash -c "chown -R www-data:www-data /app1"
+  php-fpm:
+    build: docker/php-fpm
+    container_name: "docker-lemp-php-fpm"
+    environment:
+      - PHP_FPM_USER=www-data
+      - PHP_FPM_GROUP=www-data
+      - PHP_FPM_LISTEN=9000
+    working_dir: /app1
+    volumes:
+      - "./admin:/app1"
+      - "./docker/php-fpm/php-ini-overrides.ini:/usr/local/etc/php/99-overrides.ini"
+    depends_on:
+      - mysql
+    networks:
+      - docker-lemp-network
 
+networks:
+  docker-lemp-network:
+    driver: bridge
