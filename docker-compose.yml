@@ -12,14 +12,16 @@ services:
     image: "mysql:8.0"
     container_name: "docker-lemp-mysql"
     working_dir: /app1
-    volumes:
-      - "./admin:/app1"
     environment:
       - MYSQL_DATABASE=${DB_DATABASE}
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
       - MYSQL_PASSWORD=${DB_PASSWORD}
     ports:
       - "${DB_PORT}:3306"
+    volumes:
+      - "./docker/mysql/initdb:/docker-entrypoint-initdb.d"
+      - "./docker/mysql/data:/var/lib/mysql"
+      - "./docker/mysql/logs:/var/log/mysql"
     networks:
       - network
 

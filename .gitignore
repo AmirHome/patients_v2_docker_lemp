@@ -8,3 +8,6 @@
 
 /admin/*
 /chat/*
+
+/docker/mysql/data/*
+/docker/mysql/initdb
