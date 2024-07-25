@@ -12,12 +12,18 @@ docker rm -f docker-lemp-nginx
 docker rm -f docker-lemp-mysql
 docker rm -f docker-lemp-redis
 
+docker network prune -f
+
 $dc --env-file ./admin/.env up -d --build
 
 # wait for mysql to initialize
 sleep 5
 docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' docker-lemp-mysql
+#docker network ls
+docker network inspect docker_lemp_network
 
+
+docker exec -i docker-lemp-php-fpm bash -c "ping mysql -c 4"
 docker exec -i docker-lemp-php-fpm bash -c "chmod -R 775 storage"
 docker exec -i docker-lemp-php-fpm bash -c "chown -R www-data:www-data storage"
 docker exec -i docker-lemp-php-fpm bash -c "chmod -R 775 bootstrap/cache"
