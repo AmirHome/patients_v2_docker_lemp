@@ -49,3 +49,7 @@ RUN docker-php-ext-enable pdo_mysql mysqli mbstring exif pcntl bcmath gd zip int
 
 # Get latest Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+
+
+# Update the PHP-FPM listen port using the build argument
+RUN echo "listen = 9001" >> /usr/local/etc/php-fpm.d/zz-docker.conf

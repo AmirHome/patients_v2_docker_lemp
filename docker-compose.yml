@@ -37,16 +37,36 @@ services:
     networks:
       - network
 
-  php-fpm:
-    build: docker/php-fpm
-    container_name: "docker-lemp-php-fpm"
+  php-fpm-9001:
+    build: 
+      context: ./docker/php-fpm
+      dockerfile: Dockerfile.9001
+    container_name: "docker-lemp-php-fpm-9001"
     environment:
       - PHP_FPM_USER=www-data
       - PHP_FPM_GROUP=www-data
-      - PHP_FPM_LISTEN=9000
+      - PHP_FPM_LISTEN=9001
     working_dir: /app1
     volumes:
       - "./admin:/app1"
+      - "./docker/php-fpm/php-ini-overrides.ini:/usr/local/etc/php/99-overrides.ini"
+    depends_on:
+      - mysql
+    networks:
+      - network
+
+  php-fpm-9002:
+    build: 
+      context: ./docker/php-fpm
+      dockerfile: Dockerfile.9002
+    container_name: "docker-lemp-php-fpm-9002"
+    environment:
+      - PHP_FPM_USER=www-data
+      - PHP_FPM_GROUP=www-data
+      - PHP_FPM_LISTEN=9002
+    working_dir: /app1
+    volumes:
+      - "./chat:/app1"
       - "./docker/php-fpm/php-ini-overrides.ini:/usr/local/etc/php/99-overrides.ini"
     depends_on:
       - mysql
