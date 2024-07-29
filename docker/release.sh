@@ -1,5 +1,6 @@
 #!/bin/bash
 
+### sudo chown -R deploy:deploy .
 ### sh docker/release.sh
 
 # Get all arguments
