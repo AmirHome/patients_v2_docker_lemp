@@ -53,6 +53,7 @@ docker exec -i docker-lemp-php-fpm-9001 bash -c "chown -R www-data:www-data boot
 docker exec -i docker-lemp-php-fpm-9001 bash -c "php artisan optimize:clear"
 docker exec -i docker-lemp-php-fpm-9001 bash -c "php artisan storage:link"
 docker exec -i docker-lemp-php-fpm-9001 bash -c "composer update"
+docker exec -i docker-lemp-php-fpm-9001 bash -c "php artisan key:generate"
 docker exec -i docker-lemp-php-fpm-9001 bash -c "php artisan config:cache"
 
 ### 9002
@@ -64,6 +65,7 @@ docker exec -i docker-lemp-php-fpm-9002 bash -c "chown -R www-data:www-data boot
 docker exec -i docker-lemp-php-fpm-9002 bash -c "php artisan optimize:clear"
 # docker exec -i docker-lemp-php-fpm-9002 bash -c "php artisan storage:link"
 #docker exec -i docker-lemp-php-fpm-9002 bash -c "composer update"
+docker exec -i docker-lemp-php-fpm-9002 bash -c "php artisan key:generate"
 docker exec -i docker-lemp-php-fpm-9002 bash -c "php artisan config:cache"
 
 # if argument seed is passed run this command
