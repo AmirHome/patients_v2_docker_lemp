@@ -6,8 +6,8 @@
 /app1/*
 /app2/*
 
-/admin/*
-/chat/*
+/admin
+/chat
 
 /docker/mysql/data/*
 /docker/mysql/logs/*
