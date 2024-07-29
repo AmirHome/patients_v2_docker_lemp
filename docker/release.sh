@@ -1,6 +1,7 @@
 #!/bin/bash
 
-### sudo chown -R deploy:deploy .
+### sudo chown -R deploy:deploy /home/deploy/docker_lemp/
+### git reset --hard && git clean -fd && git pull
 ### sh docker/release.sh
 
 # Get all arguments
