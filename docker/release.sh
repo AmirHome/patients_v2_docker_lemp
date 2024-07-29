@@ -1,6 +1,6 @@
 #!/bin/bash
 
-
+### sh docker/release.sh
 dc=$(which docker-compose)
 user=$(whoami)
 echo -e "### $dc \n"

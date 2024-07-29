@@ -1,5 +1,5 @@
 FROM php:8.3-fpm
-WORKDIR "/app1"
+WORKDIR "/app2"
 
 RUN apt-get update && apt-get install -y \
     git \
