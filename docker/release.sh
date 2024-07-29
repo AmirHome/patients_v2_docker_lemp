@@ -41,7 +41,7 @@ docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}
 #docker network ls
 docker network inspect docker_lemp_network
 
-
+### 9001
 docker exec -i docker-lemp-php-fpm-9001 bash -c "ping mysql -c 4"
 docker exec -i docker-lemp-php-fpm-9001 bash -c "chmod -R 775 storage"
 docker exec -i docker-lemp-php-fpm-9001 bash -c "chown -R www-data:www-data storage"
@@ -52,6 +52,17 @@ docker exec -i docker-lemp-php-fpm-9001 bash -c "php artisan optimize:clear"
 docker exec -i docker-lemp-php-fpm-9001 bash -c "php artisan storage:link"
 docker exec -i docker-lemp-php-fpm-9001 bash -c "composer update"
 docker exec -i docker-lemp-php-fpm-9001 bash -c "php artisan config:cache"
+
+### 9002
+docker exec -i docker-lemp-php-fpm-9002 bash -c "chmod -R 775 storage"
+docker exec -i docker-lemp-php-fpm-9002 bash -c "chown -R www-data:www-data storage"
+docker exec -i docker-lemp-php-fpm-9002 bash -c "chmod -R 775 bootstrap/cache"
+docker exec -i docker-lemp-php-fpm-9002 bash -c "chown -R www-data:www-data bootstrap/cache"
+
+docker exec -i docker-lemp-php-fpm-9002 bash -c "php artisan optimize:clear"
+docker exec -i docker-lemp-php-fpm-9002 bash -c "php artisan storage:link"
+#docker exec -i docker-lemp-php-fpm-9002 bash -c "composer update"
+docker exec -i docker-lemp-php-fpm-9002 bash -c "php artisan config:cache"
 
 # if argument seed is passed run this command
 # docker exec -it docker-lemp-php-fpm-9001 bash -c "php artisan migrate:fresh --seed"
