@@ -1,6 +1,24 @@
 #!/bin/bash
 
 ### sh docker/release.sh
+
+# Get all arguments
+for args in "$@"; do
+  case $args in
+  env=*)
+    ENV="${args#*=}"
+    shift
+    ;;
+  -seed)
+    MIGRATESEED=true
+    shift
+    ;;
+  *)
+    echo "Invalid argument: $args"
+    ;;
+  esac
+done
+
 dc=$(which docker-compose)
 user=$(whoami)
 echo -e "### $dc \n"
@@ -34,5 +52,11 @@ docker exec -i docker-lemp-php-fpm-9001 bash -c "php artisan optimize:clear"
 docker exec -i docker-lemp-php-fpm-9001 bash -c "php artisan storage:link"
 docker exec -i docker-lemp-php-fpm-9001 bash -c "composer update"
 docker exec -i docker-lemp-php-fpm-9001 bash -c "php artisan config:cache"
-docker exec -it docker-lemp-php-fpm-9001 bash -c "php artisan migrate:fresh --seed"
-docker exec -i docker-lemp-php-fpm-9001 bash -c "php artisan config:cache"
+
+# if argument seed is passed run this command
+# docker exec -it docker-lemp-php-fpm-9001 bash -c "php artisan migrate:fresh --seed"
+if [ "$MIGRATESEED" ]; then
+    docker exec -it docker-lemp-php-fpm-9001 bash -c "php artisan migrate:fresh --seed"
+    docker exec -i docker-lemp-php-fpm-9001 bash -c "php artisan config:cache"
+fi
+
