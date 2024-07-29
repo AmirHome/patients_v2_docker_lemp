@@ -35,6 +35,10 @@ services:
     ports:
       - "${WEB_PORT}:80"
       - 64001:8080
+    depends_on:
+      - mysql
+      - php-fpm-9001
+      - php-fpm-9002
     networks:
       - network
 
