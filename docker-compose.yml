@@ -28,7 +28,7 @@ services:
   webserver:
     image: "nginx:alpine"
     container_name: "docker-lemp-nginx"
-    working_dir: /app1
+    #working_dir: /app1
     volumes:
       - "./admin:/app1"
       - "./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf"
