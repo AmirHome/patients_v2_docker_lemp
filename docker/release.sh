@@ -55,8 +55,8 @@ docker exec -i docker-lemp-php-fpm-9001 bash -c "git config --global --add safe.
 docker exec -it docker-lemp-php-fpm-9001 bash -c "git reset --hard && git clean -df && git pull"
 
 docker exec -i docker-lemp-php-fpm-9001 bash -c "chmod -R 775 storage"
-# docker exec -i docker-lemp-php-fpm-9001 bash -c "chown -R www-data:www-data storage"
 docker exec -i docker-lemp-php-fpm-9001 bash -c "chmod -R 775 bootstrap/cache"
+# docker exec -i docker-lemp-php-fpm-9001 bash -c "chown -R www-data:www-data storage"
 # docker exec -i docker-lemp-php-fpm-9001 bash -c "chown -R www-data:www-data bootstrap/cache"
 
 docker exec -i docker-lemp-php-fpm-9001 bash -c "php artisan optimize:clear"
