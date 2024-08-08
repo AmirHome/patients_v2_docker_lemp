@@ -8,6 +8,9 @@
 
 /admin
 /chat
+admin/
+chat/
+
 
 /docker/mysql/data/*
 /docker/mysql/logs/*
