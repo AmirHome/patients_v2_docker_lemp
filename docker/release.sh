@@ -64,7 +64,7 @@ docker exec -i docker-lemp-php-fpm-9001 bash -c "php artisan storage:link"
 docker exec -i docker-lemp-php-fpm-9001 bash -c "composer update"
 #docker exec -i docker-lemp-php-fpm-9001 bash -c "php artisan key:generate"
 
-docker exec -i docker-lemp-php-fpm-9001 bash -c "php artisan queue:work --daemon > /dev/null 2>&1"
+docker exec -i docker-lemp-php-fpm-9001 bash -c "nohup php artisan queue:work --daemon >> storage/logs/laravel.log &"
 docker exec -i docker-lemp-php-fpm-9001 bash -c "php artisan queue:failed"
 
 docker exec -i docker-lemp-php-fpm-9001 bash -c "php artisan config:cache"
