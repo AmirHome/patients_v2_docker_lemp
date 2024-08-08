@@ -45,9 +45,10 @@ docker network inspect docker_lemp_network
 
 ### 9001
 docker exec -i docker-lemp-php-fpm-9001 bash -c "ping mysql -c 4"
-docker exec -i docker-lemp-php-fpm-9002 bash -c "chown -R www-data:www-data ."
-docker exec -i docker-lemp-php-fpm-9002 bash -c "git config --global --add safe.directory /app1"
-docker exec -i docker-lemp-php-fpm-9002 bash -c "git reset --hard && git clean -df && git pull"
+
+docker exec -i docker-lemp-php-fpm-9001 bash -c "chown -R www-data:www-data ."
+docker exec -i docker-lemp-php-fpm-9001 bash -c "git config --global --add safe.directory /app1"
+docker exec -i docker-lemp-php-fpm-9001 bash -c "git reset --hard && git clean -df && git pull"
 
 docker exec -i docker-lemp-php-fpm-9001 bash -c "chmod -R 775 storage"
 # docker exec -i docker-lemp-php-fpm-9001 bash -c "chown -R www-data:www-data storage"
