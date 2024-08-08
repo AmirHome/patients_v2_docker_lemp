@@ -8,8 +8,10 @@
 
 /admin
 /chat
-admin/
-chat/
+/admin/*
+/chat/*
+admin/*
+chat/*
 admin
 chat
 
