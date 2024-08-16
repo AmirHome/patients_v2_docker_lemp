@@ -21,7 +21,7 @@ if [ "$(whoami)" = "deploy" ]; then
   # ...
 else
   echo "This script must be run as the deploy user."
-  exit 1
+  # exit 1
 
 fi
 
@@ -82,7 +82,7 @@ docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}
 ### 9001 Admin app1 --------------------------------------------------------------------------------------------------
 docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "ping mysql -c 4"
 
-# docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "chown -R www-data:www-data ."
+docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "chown -R www-data:www-data ."
 docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "git config --global --add safe.directory /app1"
 docker exec -it docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "git reset --hard && git clean -df && git pull"
 
@@ -103,7 +103,7 @@ docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "php artisan config:
 docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "php artisan optimize"
 
 ### 9002 Chat app2 --------------------------------------------------------------------------------------------------
-# docker exec -i docker-lemp-${APP_NAME}-php-fpm-9002 bash -c "chown -R www-data:www-data ."
+docker exec -i docker-lemp-${APP_NAME}-php-fpm-9002 bash -c "chown -R www-data:www-data ."
 docker exec -i docker-lemp-${APP_NAME}-php-fpm-9002 bash -c "git config --global --add safe.directory /app2"
 docker exec -i docker-lemp-${APP_NAME}-php-fpm-9002 bash -c "git reset --hard && git clean -df && git pull"
 
