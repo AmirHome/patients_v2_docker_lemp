@@ -1,5 +1,11 @@
 #!/bin/sh
 
+
+### su deploy
+### --- sudo chown -R deploy:deploy /home/deploy/docker_lemp/
+### --- git reset --hard && git clean -fd && git pull
+### sh docker/release.sh
+
 # Check if the current user is 'deploy'
 if [ "$(whoami)" = "deploy" ]; then
   echo "Running as deploy user"
@@ -16,11 +22,6 @@ else
   echo "This script must be run as the deploy user."
   exit 1
 fi
-
-### su deploy
-### --- sudo chown -R deploy:deploy /home/deploy/docker_lemp/
-### --- git reset --hard && git clean -fd && git pull
-### sh docker/release.sh
 
 # Get all arguments
 for args in "$@"; do
