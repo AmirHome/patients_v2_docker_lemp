@@ -5,7 +5,7 @@
 ### su deploy
 ### --- sudo chown -R deploy:deploy /home/deploy/docker_lemp/
 ### --- git reset --hard && git clean -fd && git pull
-### sh docker/release.sh
+### sh docker/release.sh -seed
 
 # Check if the current user is 'deploy'
 if [ "$(whoami)" = "deploy" ]; then
