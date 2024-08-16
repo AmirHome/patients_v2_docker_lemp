@@ -1,23 +1,41 @@
 ###############################################################################
-#                          Generated on docker.io                          #
+#                          Generated on docker.io                             #
 ###############################################################################
+# ln -s your_app1 symlink_app1
+# ln -s your_app2 symlink_app2
+###############################################################################
+
 services:
   redis:
     image: "redis:alpine"
-    container_name: "docker-lemp-redis"
+    container_name: "docker-lemp-${APP_NAME}-redis"
+    networks:
+      - network
+
+  phpmyadmin:
+    image: "phpmyadmin"
+    container_name: "docker-lemp-${APP_NAME}-phpmyadmin"
+    environment:
+      - PMA_ARBITRARY=1
+      - PMA_HOST=mysql
+      - PMA_USER=root
+      - PMA_PASSWORD=${DB_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "${PHPMYADMIN_PORT:-8080}:80"
     networks:
       - network
 
   mysql:
     image: "mysql:8.0"
-    container_name: "docker-lemp-mysql"
+    container_name: "docker-lemp-${APP_NAME}-mysql"
     working_dir: /app1
     environment:
       - MYSQL_DATABASE=${DB_DATABASE}
       - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
       - MYSQL_PASSWORD=${DB_PASSWORD}
     ports:
-      - "${DB_PORT}:3306"
+      - "${DB_PORT:-3306}:3306"
     volumes:
       - "./docker/mysql/initdb:/docker-entrypoint-initdb.d"
       - "./docker/mysql/data:/var/lib/mysql"
@@ -27,14 +45,15 @@ services:
 
   webserver:
     image: "nginx:alpine"
-    container_name: "docker-lemp-nginx"
+    container_name: "docker-lemp-${APP_NAME}-nginx"
     volumes:
-      - "./admin:/app1"
-      - "./chat:/app2"
+      - "./symlink_app1:/app1"
+      - "./symlink_app2:/app2"
+      # - "./chat:/app2"
       - "./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf"
     ports:
-      - "${WEB_PORT}:80"
-      - 64001:8080
+      - "${APP1_PORT:-80}:80"
+      - "${APP2_PORT:-8080}:8080"
     depends_on:
       - mysql
       - php-fpm-9001
@@ -46,14 +65,14 @@ services:
     build: 
       context: ./docker/php-fpm
       dockerfile: Dockerfile.9001
-    container_name: "docker-lemp-php-fpm-9001"
+    container_name: "docker-lemp-${APP_NAME}-php-fpm-9001"
     environment:
       - PHP_FPM_USER=www-data
       - PHP_FPM_GROUP=www-data
       - PHP_FPM_LISTEN=9001
     working_dir: /app1
     volumes:
-      - "./admin:/app1"
+      - "./symlink_app1:/app1"
       - "./docker/php-fpm/php-ini-overrides.ini:/usr/local/etc/php/99-overrides.ini"
     depends_on:
       - mysql
@@ -64,14 +83,14 @@ services:
     build: 
       context: ./docker/php-fpm
       dockerfile: Dockerfile.9002
-    container_name: "docker-lemp-php-fpm-9002"
+    container_name: "docker-lemp-${APP_NAME}-php-fpm-9002"
     environment:
       - PHP_FPM_USER=www-data
       - PHP_FPM_GROUP=www-data
       - PHP_FPM_LISTEN=9002
     working_dir: /app2
     volumes:
-      - "./chat:/app2"
+      - "./symlink_app2:/app2"
       - "./docker/php-fpm/php-ini-overrides.ini:/usr/local/etc/php/99-overrides.ini"
     depends_on:
       - mysql

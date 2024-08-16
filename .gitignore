@@ -15,6 +15,9 @@ chat/*
 admin
 chat
 
+/symlink_app1
+/symlink_app2
+
 
 /docker/mysql/data/*
 /docker/mysql/logs/*
