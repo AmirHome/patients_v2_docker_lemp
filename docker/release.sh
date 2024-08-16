@@ -1,6 +1,7 @@
 #!/bin/sh
 
-
+### ln -s your_app1 symlink_app1
+### ln -s your_app2 symlink_app2
 ### su deploy
 ### --- sudo chown -R deploy:deploy /home/deploy/docker_lemp/
 ### --- git reset --hard && git clean -fd && git pull
@@ -20,15 +21,8 @@ if [ "$(whoami)" = "deploy" ]; then
   # ...
 else
   echo "This script must be run as the deploy user."
-  #exit 1
-  # Are you sure you want to run this script as root?
-  # Ask for confirmation
-  if [ "$1" = "-y" ]; then
-    echo "Running as root"
-  else
-    echo "Please run this script as the deploy user."
-    exit 1
-  fi
+  exit 1
+
 fi
 
 # Get all arguments
