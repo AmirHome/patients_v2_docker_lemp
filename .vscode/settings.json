@@ -1,6 +1,12 @@
 {
-    "intelephense.environment.includePaths": [
-        "admin",
-        "chat"
-    ]
+    "search.useIgnoreFiles": false,
+    "search.exclude": {
+        "**/deploy/backup": false,
+        "**/deploy/transfer": false
+    },
+    "explorer.excludeGitIgnore": false,
+    "files.exclude": {
+        "**/deploy/backup": true,
+        "**/deploy/transfer": true
+    }
 }
