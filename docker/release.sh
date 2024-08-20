@@ -53,7 +53,8 @@ else
   echo "File .env not found"
   exit 1
 fi
-dc=$(which docker-compose)
+# dc=$(which docker-compose)
+dc="docker compose"
 user=$(whoami)
 echo -e "### $dc \n"
 echo -e "### $user \n"
@@ -67,7 +68,7 @@ echo -e "### ${APP_NAME} \n"
 # docker rm -f docker-lemp-mysql
 # docker rm -f docker-lemp-redis
 
-# docker network prune -f
+docker network prune -f
 
 $dc down
 $dc --env-file ./symlink_app1/.env up -d --build
@@ -83,9 +84,9 @@ docker inspect --format='{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}
 docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "ping mysql -c 4"
 if [ "$(whoami)" = "deploy" ]; then
   docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "chown -R www-data:www-data ."
+  docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "git config --global --add safe.directory /app1"
+  docker exec -it docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "git reset --hard && git clean -df && git pull"
 fi
-docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "git config --global --add safe.directory /app1"
-docker exec -it docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "git reset --hard && git clean -df && git pull"
 
 docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "chmod -R 775 storage"
 docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "chmod -R 775 bootstrap/cache"
@@ -106,9 +107,9 @@ docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "php artisan optimiz
 ### 9002 Chat app2 --------------------------------------------------------------------------------------------------
 if [ "$(whoami)" = "deploy" ]; then
   docker exec -i docker-lemp-${APP_NAME}-php-fpm-9002 bash -c "chown -R www-data:www-data ."
+  docker exec -i docker-lemp-${APP_NAME}-php-fpm-9002 bash -c "git config --global --add safe.directory /app2"
+  docker exec -i docker-lemp-${APP_NAME}-php-fpm-9002 bash -c "git reset --hard && git clean -df && git pull"
 fi
-docker exec -i docker-lemp-${APP_NAME}-php-fpm-9002 bash -c "git config --global --add safe.directory /app2"
-docker exec -i docker-lemp-${APP_NAME}-php-fpm-9002 bash -c "git reset --hard && git clean -df && git pull"
 
 
 docker exec -i docker-lemp-${APP_NAME}-php-fpm-9002 bash -c "chmod -R 775 storage"

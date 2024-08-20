@@ -24,6 +24,8 @@ services:
       - "${PHPMYADMIN_PORT:-8080}:80"
     volumes:
       - /sessions
+    depends_on:
+      - mysql
     networks:
       - network
 
@@ -53,16 +55,19 @@ services:
       - "./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf"
     ports:
       - "${APP1_PORT:-80}:80"
-      - "${APP2_PORT:-8080}:8080"
+      # - "${APP2_PORT:-8080}:8080"
     depends_on:
       - mysql
       - php-fpm-9001
       - php-fpm-9002
+    extra_hosts:
+      - "app1.test:127.0.0.1"
+      - "app2.test:127.0.0.1"
     networks:
       - network
 
   php-fpm-9001:
-    build: 
+    build:
       context: ./docker/php-fpm
       dockerfile: Dockerfile.9001
     container_name: "docker-lemp-${APP_NAME}-php-fpm-9001"
@@ -76,11 +81,12 @@ services:
       - "./docker/php-fpm/php-ini-overrides.ini:/usr/local/etc/php/99-overrides.ini"
     depends_on:
       - mysql
+      - redis
     networks:
       - network
 
   php-fpm-9002:
-    build: 
+    build:
       context: ./docker/php-fpm
       dockerfile: Dockerfile.9002
     container_name: "docker-lemp-${APP_NAME}-php-fpm-9002"
@@ -94,6 +100,7 @@ services:
       - "./docker/php-fpm/php-ini-overrides.ini:/usr/local/etc/php/99-overrides.ini"
     depends_on:
       - mysql
+      - redis
     networks:
       - network
 
