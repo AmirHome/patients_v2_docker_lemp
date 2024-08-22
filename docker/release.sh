@@ -94,7 +94,7 @@ docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "ping mysql -c 4"
 if [ "$(whoami)" = "deploy" ]; then
   docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "chown -R www-data:www-data ."
   docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "git config --global --add safe.directory /app1"
-  docker exec -it docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "git reset --hard && git clean -df && git pull"
+  docker exec -it docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "git reset --hard origin/master && git clean -df && git pull"
 fi
 
 docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "chmod -R 775 storage"
@@ -114,7 +114,7 @@ docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "php artisan queue:f
 if [ "$(whoami)" = "deploy" ]; then
   docker exec -i docker-lemp-${APP_NAME}-php-fpm-9002 bash -c "chown -R www-data:www-data ."
   docker exec -i docker-lemp-${APP_NAME}-php-fpm-9002 bash -c "git config --global --add safe.directory /app2"
-  docker exec -i docker-lemp-${APP_NAME}-php-fpm-9002 bash -c "git reset --hard && git clean -df && git pull"
+  docker exec -i docker-lemp-${APP_NAME}-php-fpm-9002 bash -c "git reset --hard origin/master && git clean -df && git pull"
 fi
 
 
