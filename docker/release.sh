@@ -5,7 +5,7 @@
 ### ln -s your_app1 symlink_app1
 ### ln -s your_app2 symlink_app2
 ### su deploy
-### --- sudo chown -R deploy:deploy /home/deploy/docker_lemp/
+### --- sudo chown -R deploy:deploy /home/deploy/patientv2/docker_lemp/
 ### --- git reset --hard && git clean -fd && git pull
 ### sh docker/release.sh -seed -doc
 
@@ -14,7 +14,7 @@ if [ "$(whoami)" = "deploy" ]; then
   echo "Running as deploy user"
 
   # Command 1
-  sudo chown -R deploy:deploy /home/deploy/docker_lemp/
+  sudo chown -R deploy:deploy /home/deploy/patientv2/docker_lemp/
 
   # Command 2
   git reset --hard && git clean -fd && git pull
