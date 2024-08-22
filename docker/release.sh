@@ -7,7 +7,7 @@
 ### su deploy
 ### --- sudo chown -R deploy:deploy /home/deploy/docker_lemp/
 ### --- git reset --hard && git clean -fd && git pull
-### sh docker/release.sh -seed
+### sh docker/release.sh -seed -doc
 
 # Check if the current user is 'deploy'
 if [ "$(whoami)" = "deploy" ]; then
@@ -42,6 +42,10 @@ for args in "$@"; do
     MINI=true
     shift
     ;;
+  -doc)
+    DOC=false
+    shift
+    ;;
   *)
     echo "Invalid argument: $args"
     ;;
@@ -55,6 +59,7 @@ else
   echo "File .env not found"
   exit 1
 fi
+
 # dc=$(which docker-compose)
 dc="docker compose"
 user=$(whoami)
@@ -69,11 +74,13 @@ echo -e "### ${APP_NAME} \n"
 # docker rm -f docker-lemp-nginx
 # docker rm -f docker-lemp-mysql
 # docker rm -f docker-lemp-redis
+if [ "$DOC" ]; then
 
-docker network prune -f
+  docker network prune -f
 
-$dc down
-$dc --env-file ./symlink_app1/.env up -d --build
+  $dc down
+  $dc --env-file ./symlink_app1/.env up -d --build
+fi
 
 # wait for mysql to initialize
 sleep 3
