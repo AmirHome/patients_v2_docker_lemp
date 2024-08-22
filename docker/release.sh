@@ -78,7 +78,7 @@ if [ "$DOC" ]; then
 
   # docker network prune -f
 
-  $dc down
+  $dc --env-file ./symlink_app1/.env down
   $dc --env-file ./symlink_app1/.env up -d --build
 fi
 
