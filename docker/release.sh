@@ -1,5 +1,7 @@
 #!/bin/sh
 
+### DB_HOST=mysql
+### REDIS_HOST=redis
 ### ln -s your_app1 symlink_app1
 ### ln -s your_app2 symlink_app2
 ### su deploy
@@ -101,9 +103,6 @@ docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "composer update"
 docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "nohup php artisan queue:work --daemon >> storage/logs/laravel.log &"
 docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "php artisan queue:failed"
 
-docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "php artisan config:cache"
-docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "php artisan optimize"
-
 ### 9002 Chat app2 --------------------------------------------------------------------------------------------------
 if [ "$(whoami)" = "deploy" ]; then
   docker exec -i docker-lemp-${APP_NAME}-php-fpm-9002 bash -c "chown -R www-data:www-data ."
@@ -114,11 +113,12 @@ fi
 
 docker exec -i docker-lemp-${APP_NAME}-php-fpm-9002 bash -c "chmod -R 775 storage"
 docker exec -i docker-lemp-${APP_NAME}-php-fpm-9002 bash -c "chmod -R 775 bootstrap/cache"
-docker exec -i docker-lemp-${APP_NAME}-php-fpm-9002 bash -c "php artisan storage:link"
 # docker exec -i docker-lemp-${APP_NAME}-php-fpm-9002 bash -c "chown -R www-data:www-data storage"
 # docker exec -i docker-lemp-${APP_NAME}-php-fpm-9002 bash -c "chown -R www-data:www-data bootstrap/cache"
 
 docker exec -i docker-lemp-${APP_NAME}-php-fpm-9002 bash -c "php artisan optimize:clear"
+docker exec -i docker-lemp-${APP_NAME}-php-fpm-9002 bash -c "php artisan storage:link"
+
 
 # if argument seed is passed run this command
 if [ "$MIGRATESEED" ]; then
@@ -127,7 +127,13 @@ else
     docker exec -it docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "php artisan migrate --force"
 fi
 
-docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "php artisan config:cache"
-docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "php artisan optimize"
+
+if [ "$(whoami)" = "deploy" ]; then
+  docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "php artisan config:cache"
+  docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "php artisan optimize"
+
+  docker exec -i docker-lemp-${APP_NAME}-php-fpm-9002 bash -c "php artisan config:cache"
+  docker exec -i docker-lemp-${APP_NAME}-php-fpm-9002 bash -c "php artisan optimize"
+fi
 
 docker ps
