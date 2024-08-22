@@ -35,7 +35,7 @@ for args in "$@"; do
     shift
     ;;
   -seed)
-    MIGRATESEED=true
+    MIGRATESEED=false
     shift
     ;;
   -mini)
