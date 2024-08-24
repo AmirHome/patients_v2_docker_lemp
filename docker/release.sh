@@ -108,7 +108,7 @@ docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "composer dump-autol
 docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "php artisan optimize:clear"
 docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "php artisan storage:link"
 docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "composer update"
-docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "php artisan media-library:regenerate --only-missing"
+docker exec -it docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "php artisan media-library:regenerate --only-missing"
 
 docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "nohup php artisan queue:work --daemon >> storage/logs/laravel.log &"
 docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "php artisan queue:failed"
