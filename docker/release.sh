@@ -55,6 +55,7 @@ done
 # Read the .env file
 if [ -f "symlink_app1/.env" ]; then
   export $(cat symlink_app1/.env | grep -v '#' | awk '/=/ {print $1}')
+
 else
   echo "File .env not found"
   exit 1
@@ -66,7 +67,6 @@ user=$(whoami)
 echo -e "### $dc \n"
 echo -e "### $user \n"
 echo -e "### ${APP_NAME} \n"
-
 
 ### docker rm -f $(docker ps -a -q)
 ### docker rm -f docker-lemp-${APP_NAME}-php-fpm-9001
@@ -95,6 +95,8 @@ if [ "$(whoami)" = "deploy" ]; then
   docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "chown -R www-data:www-data ."
   docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "git config --global --add safe.directory /app1"
   docker exec -it docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "git reset --hard origin/master && git clean -df && git pull"
+  #php artisan media-library:clear
+  #php artisan media-library:regenerate --only-missing
 fi
 
 docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "chmod -R 775 storage"
@@ -102,10 +104,11 @@ docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "chmod -R 775 bootst
 ### docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "chown -R www-data:www-data storage"
 ### docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "chown -R www-data:www-data bootstrap/cache"
 
+docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "composer dump-autoload"
 docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "php artisan optimize:clear"
 docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "php artisan storage:link"
 docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "composer update"
-### docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "php artisan key:generate"
+docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "php artisan media-library:regenerate --only-missing"
 
 docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "nohup php artisan queue:work --daemon >> storage/logs/laravel.log &"
 docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "php artisan queue:failed"
@@ -117,7 +120,6 @@ if [ "$(whoami)" = "deploy" ]; then
   docker exec -i docker-lemp-${APP_NAME}-php-fpm-9002 bash -c "git reset --hard origin/master && git clean -df && git pull"
 fi
 
-
 docker exec -i docker-lemp-${APP_NAME}-php-fpm-9002 bash -c "chmod -R 775 storage"
 docker exec -i docker-lemp-${APP_NAME}-php-fpm-9002 bash -c "chmod -R 775 bootstrap/cache"
 ### docker exec -i docker-lemp-${APP_NAME}-php-fpm-9002 bash -c "chown -R www-data:www-data storage"
@@ -126,14 +128,12 @@ docker exec -i docker-lemp-${APP_NAME}-php-fpm-9002 bash -c "chmod -R 775 bootst
 docker exec -i docker-lemp-${APP_NAME}-php-fpm-9002 bash -c "php artisan optimize:clear"
 docker exec -i docker-lemp-${APP_NAME}-php-fpm-9002 bash -c "php artisan storage:link"
 
-
 # if argument seed is passed run this command
 if [ "$MIGRATESEED" ]; then
-    docker exec -it docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "php artisan migrate:fresh --seed"
+  docker exec -it docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "php artisan migrate:fresh --seed"
 else
-    docker exec -it docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "php artisan migrate --force"
+  docker exec -it docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "php artisan migrate --force"
 fi
-
 
 if [ "$(whoami)" = "deploy" ]; then
   docker exec -i docker-lemp-${APP_NAME}-php-fpm-9001 bash -c "php artisan config:cache"
