@@ -55,6 +55,7 @@ services:
       - "./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf"
     ports:
       - 80:80
+      - 443:443
       # - "${APP1_PORT:-80}:80"
       # - "${APP2_PORT:-8080}:8080"
     depends_on:
