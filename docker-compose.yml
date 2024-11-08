@@ -53,6 +53,7 @@ services:
       - "./symlink_app1:/app1"
       - "./symlink_app2:/app2"
       - "./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf"
+      - "./docker/nginx/certs:/etc/nginx/certs"
     ports:
       - "80:80"
       - "443:443"
