@@ -4,7 +4,7 @@
 
 dc="docker compose"
 
-echo -e "### $dc \n"
+echo -e "### $dc running..\n"
 
 # docker network prune -f
 $dc --env-file ./symlink_app1/.env down

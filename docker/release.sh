@@ -50,8 +50,6 @@ else
 
 fi
 
-sudo sh docker/docker_up.sh
-exit 0
 # Get all arguments
 for args in "$@"; do
   case $args in
@@ -108,7 +106,7 @@ if [ "$DOC" ]; then
   # docker network prune -f
   # $dc --env-file ./symlink_app1/.env down
   # $dc --env-file ./symlink_app1/.env up -d --build
-  sh docker/docker_up.sh
+  sudo sh docker/docker_up.sh
 
 fi
 
