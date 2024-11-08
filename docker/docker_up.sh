@@ -7,9 +7,9 @@ dc="docker compose"
 echo -e "### $dc running..\n"
 
 # docker network prune -f
-$dc --env-file ./symlink_app1/.env down
-$dc --env-file ./symlink_app1/.env build
-$dc --env-file ./symlink_app1/.env up -d --remove-orphans
+$dc --env-file /home/deploy/patientv2/docker_lemp/symlink_app1/.env down
+$dc --env-file /home/deploy/patientv2/docker_lemp/symlink_app1/.env build
+$dc --env-file /home/deploy/patientv2/docker_lemp/symlink_app1/.env up -d --remove-orphans
 
 # Clean docker unused image and container
 # docker system prune -a
