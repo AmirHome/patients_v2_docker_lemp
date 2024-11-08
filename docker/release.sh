@@ -50,7 +50,7 @@ else
 
 fi
 
-sh docker/docker_up.sh
+sudo sh docker/docker_up.sh
 exit 0
 # Get all arguments
 for args in "$@"; do
