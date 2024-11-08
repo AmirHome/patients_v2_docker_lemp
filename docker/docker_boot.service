@@ -1,0 +1,13 @@
+[Unit]
+Description=docker boot php-app, mssql containers by amir. for quickly booting I remove --build option from docker-compose
+After=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+WorkingDirectory=/home/deploy/patientv2/docker_lemp/docker
+ExecStart=/bin/bash /home/deploy/patientv2/docker_lemp/docker/docker_up.sh
+
+
+[Install]
+WantedBy=multi-user.target

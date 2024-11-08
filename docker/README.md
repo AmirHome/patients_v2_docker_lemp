@@ -160,3 +160,15 @@ environment:
       ]
   }
 ```
+
+
+  ### Bootable Docker
+  ln -s /home/deploy/patientv2/docker_lemp/docker/docker_boot.service  /etc/systemd/system/docker_boot.service
+
+  sudo systemctl daemon-reload
+
+  systemctl enable docker_boot.service
+
+  systemctl start docker_boot.service
+
+  systemctl status docker_boot.service

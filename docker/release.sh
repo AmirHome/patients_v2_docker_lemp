@@ -47,10 +47,11 @@ else
   
   rm -rf $SCRIPTPATH/mysql/data/*
   rm -rf $SCRIPTPATH/mysql/logs/*
-  
 
 fi
 
+sh docker_up.sh
+exit 0
 # Get all arguments
 for args in "$@"; do
   case $args in
@@ -87,9 +88,9 @@ else
 fi
 
 # dc=$(which docker-compose)
-dc="docker compose"
+
 user=$(whoami)
-echo -e "### $dc \n"
+
 echo -e "### $user \n"
 echo -e "### ${APP_NAME} \n"
 
@@ -100,11 +101,15 @@ echo -e "### ${APP_NAME} \n"
 ### docker rm -f docker-lemp-mysql
 ### docker rm -f docker-lemp-redis
 if [ "$DOC" ]; then
+  # echo -e "### $dc \n"
+
+  # dc="docker compose"
 
   # docker network prune -f
+  # $dc --env-file ./symlink_app1/.env down
+  # $dc --env-file ./symlink_app1/.env up -d --build
+  sh docker/docker_up.sh
 
-  $dc --env-file ./symlink_app1/.env down
-  $dc --env-file ./symlink_app1/.env up -d --build
 fi
 
 # wait for mysql to initialize
